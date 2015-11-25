@@ -164,6 +164,7 @@ if ( typeof Object.create !== 'function' ) {
 
       // Check if enabled or just 1 panel in viewport
       var panelsInViewPort = self.getPanelsInViewport();
+
       if (!self.enabled || panelsInViewPort.length < 2) {
         $target = panelsInViewPort.eq(0);
         if(!$target.is(self.getPanel('.active'))) {
@@ -366,6 +367,15 @@ if ( typeof Object.create !== 'function' ) {
         scrollTarget = $target.offset().top;
       } else {
         scrollTarget = self.$snapContainer.scrollTop() + $target.position().top;
+      }
+
+      var scrollDiff = Math.abs($(window).scrollTop() - scrollTarget);
+      if ( $target.data('overscroll') ) {
+        scrollDiff += Math.round($(window).height() / 4);
+      }
+
+      if ( scrollDiff - $(window).height() > 0 ) {
+        return;
       }
 
       scrollTarget -=  self.options.offset;
