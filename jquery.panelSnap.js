@@ -122,7 +122,6 @@ if ( typeof Object.create !== 'function' ) {
       var self = this;
 
       selector = typeof selector === 'string' ? selector : null;
-
       $element.on(event + self.options.namespace, selector, $.proxy(function(e) {
 
         return method.call(self, e);
@@ -337,20 +336,17 @@ if ( typeof Object.create !== 'function' ) {
     },
 
     captureMenuClick: function(e) {
-
       var self = this;
 
       var panel = $(e.currentTarget).data('panel');
       var $target = self.getPanel('[data-panel="' + panel + '"]');
-
-      self.snapToPanel($target);
+      self.snapToPanel($target, true);
 
       return false;
 
     },
 
-    snapToPanel: function($target) {
-
+    snapToPanel: function($target, force) {
       var self = this;
 
       if (!$target.jquery) {
@@ -374,7 +370,7 @@ if ( typeof Object.create !== 'function' ) {
         scrollDiff += Math.round($(window).height() / 4);
       }
 
-      if ( scrollDiff - $(window).height() > 0 ) {
+      if ( ! force && scrollDiff - $(window).height() > 0 ) {
         return;
       }
 
